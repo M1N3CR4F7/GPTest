@@ -66,12 +66,11 @@ Una breve descripción de la estructura del proyecto y los archivos principales.
 ```plaintext
 GPTest/
 ├── data/                 # Datos utilizados por el modelo
-├── models/               # Modelos entrenados
-├── static/               # Archivos estáticos (HTML, CSS, JS)
+├── models/               # Modelos entrenados de IA
 ├── templates/            # Plantillas HTML
 ├── gptest/               # Código fuente del proyecto
-│   ├── __init__.py
-│   ├── main.py           # Archivo principal para ejecutar la app
+│   ├── GPT.py            # Archivo principal para ejecutar la IA
+│   ├── app.py            # Archivo principal para crear el sitio web
 │   └── ...               # Otros módulos y scripts
 ├── requirements.txt      # Dependencias del proyecto
 └── README.md             # Este archivo
