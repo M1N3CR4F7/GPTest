@@ -88,4 +88,4 @@ Este proyecto está bajo la Licencia MIT. Para más detalles, consulta el archiv
 
 ## Contacto
 
-Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue o contactar al mantenedor del proyecto a través de [un correo electrónico](mailto:vicentejcorread@gmail.com) o [tu perfil de GitHub](https://github.com/M1N3CR4F7).
+Si tienes alguna pregunta o sugerencia, no dudes en abrir un issue o contactame a través de el[ correo electrónico](mailto:vicentejcorread@gmail.com) o [mi perfil de GitHub](https://github.com/M1N3CR4F7).
