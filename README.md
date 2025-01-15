@@ -42,6 +42,11 @@ Sigue estos pasos para instalar y configurar el proyecto en tu entorno local.
     pip install -r requirements.txt
     ```
 
+4. Activa el sitio web
+   ```
+   python app.py
+   ```
+   Y, luego ve a [El sitio web de tu PC para chatear con la IA](localhost:5000)
 ## Uso
 
 Proporciona un ejemplo sencillo de cómo utilizar el proyecto después de la configuración.
