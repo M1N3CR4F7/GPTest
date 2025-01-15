@@ -18,5 +18,5 @@ Antes de comenzar, asegúrate de tener instalado lo siguiente:
 1. **Clona el repositorio:**
 
    ```bash
-   git clone https://github.com/tu_usuario/GPTest.git
+   git clone https://github.com/M1N3CR4F7/GPTest.git
    cd GPTest
