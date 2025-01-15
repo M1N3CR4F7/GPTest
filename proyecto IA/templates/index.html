@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPTest</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom right, #000000, #00b8b8, #003366);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .chat-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            padding-bottom: 50px;
+            margin-bottom: 60px;
+            scrollbar-width: thin;
+            scrollbar-color: #888 #333; /* Color de la barra gris oscuro */
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background-color: transparent; /* Fondo transparente */
+            border-radius: 5px;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #888; /* Pulgar gris oscuro */
+            border-radius: 5px;
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 10px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .user-message {
+            background-color: #ffffff;
+            color: #000;
+            float: right;
+            margin-right: 20px;
+            text-align: right;
+            padding: 10px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            display: inline-block;
+            max-width: 70%;
+        }
+
+        .ia-message {
+            background-color: #333333;
+            color: #ffffff;
+            align-self: flex-start;
+            margin-left: 20px;
+            text-align: left;
+            max-width: 70%;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+            padding: 5px 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .input-container input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #555; /* Borde sin redondear */
+            background-color: #444;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .input-container input:focus {
+            outline: none;
+            border-color: #00b8b8;
+        }
+
+        .send-button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #00b8b8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .send-button:hover {
+            background-color: #007e7e;
+        }
+
+        .send-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>GPTest</h1>
+
+    <div class="chat-container" id="chat-container">
+        <!-- Aquí se mostrarán los mensajes del chat -->
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="user-input" placeholder="Escribe tu mensaje aquí..." autofocus>
+        <button class="send-button" id="send-button" disabled>Enviar</button>
+    </div>
+
+    <script>
+        const userInputField = document.getElementById('user-input');
+        const chatContainer = document.getElementById('chat-container');
+        const sendButton = document.getElementById('send-button');
+        let userCanSendMessage = true;
+
+        // Función para añadir el mensaje al chat
+        function addMessageToChat(message, className) {
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message', className);
+            messageElement.textContent = message;
+            chatContainer.appendChild(messageElement);
+
+            setTimeout(() => {
+                const lastMessage = chatContainer.lastElementChild;
+                if (lastMessage) {
+                    const lastMessageHeight = lastMessage.offsetHeight;
+                    messageElement.style.marginTop = `${lastMessageHeight}px`;
+                }
+            }, 0);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Función para enviar el mensaje
+        function sendMessage() {
+            if (!userCanSendMessage) return;
+
+            const userInput = userInputField.value.trim();
+            if (userInput) {
+                addMessageToChat(userInput, 'user-message');
+                userInputField.value = '';
+                sendButton.disabled = true;
+
+                userCanSendMessage = false;
+
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `message=${encodeURIComponent(userInput)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const iaResponse = data.response;
+                    addMessageToChat(iaResponse, 'ia-message');
+                    sendButton.disabled = false;
+                    userCanSendMessage = true;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    sendButton.disabled = false;
+                    userCanSendMessage = true;
+                });
+            }
+        }
+
+        userInputField.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', function() {
+            sendMessage();
+        });
+    </script>
+</body>
+</html>
